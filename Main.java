@@ -2,9 +2,9 @@ import java.util.*;
 import java.io.*;
 
 class Main {
-  public static int numBins = 20; // ruma not included
-  public static int numStates = 10000; // number of states to calculate
-  public static int[][] states = new int[200000][numBins + 1]; // stores all states, first number is last played
+  public static int numBins = 15; // ruma not included
+  public static int numStates = 1000000; // number of states to calculate
+  public static long[][] states = new long[10000000][numBins + 1]; // stores all states, first number is last played
 
   public static void main(String[] args) throws IOException {
     readArray();
@@ -21,7 +21,7 @@ class Main {
     // System.out.println(" BASE:" + Integer.toBinaryString(state));
 
     for (int i = 0; i <= 1; i++) {
-      int[] bins = new int[numBins + 1];
+      long[] bins = new long[numBins + 1];
       for (int j = 0; j < bins.length; j++) {
         bins[j] = states[state][j];
       }
@@ -32,19 +32,19 @@ class Main {
       // 0 = sow from last sowed position
       int pos = 0; // sow from ruma
       if (i == 0) {
-        pos = states[state][0]; // sow from last sowed position
+        pos = (int) states[state][0]; // sow from last sowed position
       }
 
       int beansInHand = 0;
-      int newState = Integer.parseInt(Integer.toBinaryString(state) + i, 2);
-      if (newState < numStates && states[state][0] != -1 && bins[pos] > 1) {
+      long newState = Long.parseLong(Long.toBinaryString(state) + i, 2);
+      if (states[state][0] != -1 && bins[pos] > 1) {
         while (bins[pos] > 0) {
           bins[pos]--;
           pos++;
           // wrapping
           // if(pos > numBins) {
           // pos = 0;
-          // }
+          // }x
           beansInHand++;
         }
         bins[pos] = beansInHand;
@@ -56,10 +56,10 @@ class Main {
         // System.out.println(" POS: " + i);
 
         for (int j = 0; j < bins.length; j++) {
-          states[newState][j] = bins[j];
+          states[(int) newState][j] = bins[j];
         }
       } else {
-        states[newState][0] = -1;
+        states[(int) newState][0] = -1;
       }
     }
   }
