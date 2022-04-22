@@ -1,8 +1,9 @@
 import java.util.*;
 import java.io.*;
 
+
 class Main {
-  public static int numBins = 15; // ruma not included
+  public static int numBins = 2; // ruma not included
   public static int numStates = 1000000; // number of states to calculate
   public static long[][] states = new long[10000000][numBins + 1]; // stores all states, first number is last played
 
@@ -42,9 +43,10 @@ class Main {
           bins[pos]--;
           pos++;
           // wrapping
-          // if(pos > numBins) {
-          // pos = 0;
-          // }x
+          if (pos > numBins) {
+            pos = 0;
+          }
+
           beansInHand++;
         }
         bins[pos] = beansInHand;
@@ -80,11 +82,22 @@ class Main {
     FileWriter writer = new FileWriter("states.txt");
     for (int i = 0; i < numStates + 1; i++) {
       if (states[i][0] != -1) {
-        writer.write(i + " "); // output index
-        for (int j = 0; j < states[i].length; j++) {
-          writer.write(states[i][j] + " ");
+        long num = states[i][2];
+        boolean awesome = true;
+        for (int j = 1; j < states[i].length; j++) {
+          if (states[i][j] != num) {
+            awesome = false;
+          }
         }
-        writer.write("\n");
+
+        if (awesome) {
+          // writer.write(i + " "); // output index
+          // for (int j = 0; j < states[i].length; j++) {
+          // writer.write(states[i][j] + " ");
+          // }
+          writer.write(i + " " + states[i][numBins] + "");
+          writer.write("\n");
+        }
       }
     }
     writer.close();
